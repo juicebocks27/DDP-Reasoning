@@ -4,6 +4,22 @@ This project explores circular seating arrangements for representatives, providi
 
 ---
 
+## Repository Structure
+
+This repository contains two primary files:
+
+1. **`Round_Table_v3.ipynb`**
+   - Contains all the helper functions that act as the text corpus for the LLM (Large Language Model) functionality.
+   - These functions solve circular seating arrangement problems by exploring various permutations and applying logical conditions.
+
+2. **`Round_table_llm_v2.ipynb`**
+   - Builds upon the helper functions from `Round_Table_v3` and integrates them with an LLM.
+   - The LLM uses these functions as context to generate and execute Python code combinations to solve complex reasoning problems related to circular arrangements.
+
+These files provide a framework for solving advanced logical reasoning challenges by combining helper functions with LLM-powered execution.
+
+---
+
 ## Features and Functions
 
 ### **Core Functions**
@@ -31,7 +47,7 @@ This project explores circular seating arrangements for representatives, providi
    - **Logic**: Calculates clockwise positions and identifies the person in between.
 
 4. **`query_neighbors(seating_position, person)`**
-   - **Definition**: Prints the left and right neighbours of a person in a given arrangement.
+   - **Definition**: Prints the left and right neighbors of a person in a given arrangement.
    - **Logic**: Uses `who_sits_on_left` and `who_sits_on_right` to determine neighbors.
 
 5. **`query_between(seating_position, person1, person2)`**
@@ -46,7 +62,7 @@ This project explores circular seating arrangements for representatives, providi
    - **Logic**: Uses the `normalize()` function and the set of valid arrangements.
 
 2. **`find_valid_arrangements(arrangements, conditions)`**
-   - **Definition**: Finds all unique valid seating arrangements based on specified conditions.
+   - **Definition**: Finds all unique, valid seating arrangements based on specified conditions.
    - **Logic**: Checks all permutations of arrangements against conditions and returns unique normalized configurations.
 
 ---
