@@ -1,0 +1,98 @@
+# Context for LLM: Generic Probability Functions for Dice Rolls
+
+# Description:
+# This framework is designed to solve generic probability problems involving rolling dice.
+# It provides reusable functions for calculating probabilities for events like sums, products, specific numbers, and combinations involving multiple dice.
+
+from itertools import product
+from math import comb
+
+# Function to calculate the probability of an event
+def calculate_probability(event_count, total_outcomes):
+    """Calculates the probability of an event occurring."""
+    return event_count / total_outcomes
+
+# Function to calculate the total possible outcomes for rolling `n` dice
+def total_outcomes(sides, n):
+    """Calculates the total number of outcomes when rolling `n` dice with `sides` sides each."""
+    return sides ** n
+
+# Function to count outcomes with a specific sum when rolling `n` dice
+def count_outcomes_with_sum(sides, n, target_sum):
+    """Counts the number of outcomes where the sum of `n` dice equals the target sum."""
+    outcomes = product(range(1, sides + 1), repeat=n)
+    return sum(1 for outcome in outcomes if sum(outcome) == target_sum)
+
+# Function to count outcomes with a specific product when rolling `n` dice
+def count_outcomes_with_product(sides, n, min_product):
+    """Counts the number of outcomes where the product of `n` dice is greater than or equal to the minimum product."""
+    outcomes = product(range(1, sides + 1), repeat=n)
+    return sum(1 for outcome in outcomes if product_of_list(outcome) > min_product)
+
+# Helper function to calculate the product of numbers in a list
+def product_of_list(lst):
+    """Calculates the product of numbers in a list."""
+    product = 1
+    for num in lst:
+        product *= num
+    return product
+
+# Function to count outcomes with at least one specific number
+def count_outcomes_with_specific_number(sides, n, specific_number):
+    """Counts the number of outcomes where at least one die shows the specific number."""
+    total = total_outcomes(sides, n)
+    outcomes_without_specific = (sides - 1) ** n
+    return total - outcomes_without_specific
+
+# Function to count outcomes with exactly `k` occurrences of a specific number
+def count_outcomes_with_exactly_k(sides, n, specific_number, k):
+    """Counts the number of outcomes where exactly `k` dice show the specific number."""
+    favorable_combinations = comb(n, k)
+    remaining_outcomes = (sides - 1) ** (n - k)
+    return favorable_combinations * remaining_outcomes
+
+# Example Queries for Dice Probability
+if __name__ == "__main__":
+    # Q1: Probability that the sum is greater than 9 when rolling two six-sided dice
+    sides = 6
+    n = 2
+    target_sum = 9
+    total = total_outcomes(sides, n)
+    outcomes = sum(1 for outcome in product(range(1, sides + 1), repeat=n) if sum(outcome) > target_sum)
+    print("Probability that the sum is greater than 9:", calculate_probability(outcomes, total))
+
+    # Q2: Probability of getting a sum equal to 9 when rolling two eight-sided dice
+    sides = 8
+    n = 2
+    target_sum = 9
+    outcomes = count_outcomes_with_sum(sides, n, target_sum)
+    print("Probability of sum equal to 9:", calculate_probability(outcomes, total_outcomes(sides, n)))
+
+    # Q3: Probability of getting exactly two 5s when rolling three six-sided dice
+    sides = 6
+    n = 3
+    specific_number = 5
+    k = 2
+    outcomes = count_outcomes_with_exactly_k(sides, n, specific_number, k)
+    print("Probability of exactly two 5s:", calculate_probability(outcomes, total_outcomes(sides, n)))
+
+    # Q4: Probability that the product of two six-sided dice is greater than 15
+    sides = 6
+    n = 2
+    min_product = 15
+    outcomes = count_outcomes_with_product(sides, n, min_product)
+    print("Probability that the product is greater than 15:", calculate_probability(outcomes, total_outcomes(sides, n)))
+
+    # Q5: Probability of rolling at least one 5 when rolling two six-sided dice
+    sides = 6
+    n = 2
+    specific_number = 5
+    outcomes = count_outcomes_with_specific_number(sides, n, specific_number)
+    print("Probability of at least one 5:", calculate_probability(outcomes, total_outcomes(sides, n)))
+
+    # Q6: Probability of rolling a sum of 6 when rolling two six-sided dice
+    sides = 6
+    n = 2
+    target_sum = 6
+    outcomes = count_outcomes_with_sum(sides, n, target_sum)
+    print("Probability of rolling a sum of 6:", calculate_probability(outcomes, total_outcomes(sides, n)))
